@@ -17,6 +17,7 @@ void MenuFunc(){
     cout << "2 - Ordenação pelo metodo bolha" << endl;
     cout << "3 - Ordenação pelo metodo seleçao" << endl;
     cout << "4 - Ordenação pelo metodo Insercao" << endl;
+    cout << "5 - Ordenação Quicksort Recursivo" << endl;
 }
 /*-------------------------------------------------------------------------------------------------------------*/
 
@@ -60,14 +61,38 @@ void Insercao(int *v, int n){
         v[j+1] = aux;
     }  
 }
+//QuickSort
+void Particao(int Esq, int Dir, int *i, int *j, int *vetor){
+    int x, w;
+    *i = Esq; *j = Dir;
+    x = vetor[(*i + *j)/2]; /*Define o pivo como sendo o item central do vetor*/
 
+    do
+    {
+        while(x > vetor[*i]) (*i)++;
+        while(x < vetor[*j]) (*j)--;
+
+        if(*i <= *j){
+            w = vetor[*i]; vetor[*i] = vetor[*j]; vetor[*j] = w;
+            (*i)++; (*j)--; 
+        }
+    } while (*i <= *j);  
+}
+//QuickSort Recursivo
+void Ordena(int Esq, int Dir, int *Vetor){
+    int i; int j;
+
+    Particao(Esq, Dir, &i, &j, Vetor);
+    if (Esq < j) Ordena(Esq, j, Vetor);
+    if (i < Dir) Ordena(i, Dir, Vetor);
+}
 
 int main()
 {
     int operacao;
 
-    int n = 1000;
-    int VectorOrdenacao[1000];
+    int n = 9999;
+    int VectorOrdenacao[9999];
 
     while (scanf("%d", &operacao) != EOF){
 
@@ -124,6 +149,19 @@ int main()
 
             cout << "Tempo levado pela funçao " << duration1 << " microseconds" << endl;
             break; 
+            }
+
+        case 5:
+            {
+            auto start1 = high_resolution_clock::now();
+            Ordena(0, n-1, VectorOrdenacao);
+            auto stop1 = high_resolution_clock::now();
+
+            auto duration1 = duration_cast<microseconds>(stop1 - start1).count();
+
+            cout << "Tempo levado pela funçao " << duration1 << " microseconds" << endl;
+
+
             }
         }
     }
